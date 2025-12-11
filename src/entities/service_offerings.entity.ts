@@ -12,20 +12,20 @@ import { Specialist } from "./specialists.entity";
 @Entity("service_offerings")
 export class ServiceOffering {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column("uuid")
-  specialists: string;
+  specialists!: string;
 
   @ManyToOne(() => Specialist, (specialist) => specialist.service_offerings, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "specialists" })
-  specialist: Specialist;
+  specialist!: Specialist;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }

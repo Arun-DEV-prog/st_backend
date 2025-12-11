@@ -25,49 +25,49 @@ export enum MediaType {
 @Entity("media")
 export class Media {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column("uuid")
-  specialists: string;
+  specialists!: string;
 
   @ManyToOne(() => Specialist, (specialist) => specialist.media, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "specialists" })
-  specialist: Specialist;
+  specialist!: Specialist;
 
   @Column("varchar", { length: 255 })
-  file_name: string;
+  file_name!: string;
 
   @Column("int")
-  file_size: number;
+  file_size!: number;
 
   @Column("int")
-  display_order: number;
+  display_order!: number;
 
   @Column({
     type: "enum",
     enum: MimeType,
     nullable: true,
   })
-  mime_type: MimeType;
+  mime_type!: MimeType;
 
   @Column({
     type: "enum",
     enum: MediaType,
     nullable: true,
   })
-  media_type: MediaType;
+  media_type!: MediaType;
 
   @Column({ type: "timestamp", nullable: true })
-  uploaded_at: Date;
+  uploaded_at!: Date;
 
   @DeleteDateColumn()
-  deleted_at: Date;
+  deleted_at!: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }
