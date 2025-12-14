@@ -15,7 +15,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // API routes will be imported here
-// import userRoutes from './routes/userRoutes';
-// app.use('/api/users', userRoutes);
+import specialistsRoutes from './routes/specialists.routes';
+app.use('/api/specialists', specialistsRoutes);
 
 export default app;
