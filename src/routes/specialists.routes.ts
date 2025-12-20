@@ -1,13 +1,17 @@
 import { Router } from 'express';
-import { SpecialistsController } from '../controllers/specialists.controller';
+import { SpecialistController } from '../controllers/specialists.controller';
+import { specialistUpload } from '../middleware/multer.middleware';
 
 const router = Router();
-const specialistsController = new SpecialistsController();
 
-router.post('/', specialistsController.createSpecialist.bind(specialistsController));
-router.get('/', specialistsController.getAllSpecialists.bind(specialistsController));
-router.get('/:id', specialistsController.getSpecialistById.bind(specialistsController));
-router.put('/:id', specialistsController.updateSpecialist.bind(specialistsController));
-router.delete('/:id', specialistsController.deleteSpecialist.bind(specialistsController));
+router.post(
+  '/',
+  specialistUpload.fields([
+    { name: 'image1', maxCount: 1 },
+    { name: 'image2', maxCount: 1 },
+    { name: 'image3', maxCount: 1 },
+  ]),
+  SpecialistController.create
+);
 
 export default router;

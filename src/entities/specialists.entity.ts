@@ -3,82 +3,80 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  OneToOne,
+  JoinColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-} from "typeorm";
-import { Media } from "./media.entity";
-import { PlatformFee } from "./platform_fee.entity";
-import { ServiceOffering } from "./service_offerings.entity";
+} from 'typeorm';
+import { Media } from './media.entity';
+import { ServiceOffering } from './service_offerings.entity';
+import { PlatformFee } from './platform_fee.entity';
 
 export enum VerificationStatus {
-  pending = "pending",
-  approved = "approved",
-  rejected = "rejected"
+  pending = 'pending',
+  approved = 'approved',
+  rejected = 'rejected',
 }
 
-@Entity("specialists")
+@Entity('specialists')
 export class Specialist {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column("decimal", { precision: 3, scale: 2, nullable: true })
-  average_rating!: number;
-
-  @Column({ type: "boolean", default: true })
-  is_draft!: boolean;
-
-  @Column("int", { default: 0 })
-  total_number_of_ratings!: number;
-
-  @Column("varchar", { length: 255 })
+  @Column()
   title!: string;
 
-  @Column("varchar", { length: 255 })
+  @Column({ unique: true })
   slug!: string;
 
-  @Column("text", { nullable: true })
-  description!: string;
+  @Column({ type: 'text', nullable: true })
+  description?: string;
 
-  @Column("decimal", { precision: 10, scale: 2 })
+  @Column('decimal')
   base_price!: number;
 
-  @Column("decimal", { precision: 10, scale: 2 })
-  platform_fee!: number;
+  // ✅ NUMERIC VALUE
+  @Column('decimal', { default: 0 })
+  platform_fee_amount!: number;
 
-  @Column("decimal", { precision: 10, scale: 2 })
+  @Column('decimal')
   final_price!: number;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: VerificationStatus,
     default: VerificationStatus.pending,
   })
   verification_status!: VerificationStatus;
 
-  @Column({ type: "boolean", default: false })
+  @Column({ default: false })
   is_verified!: boolean;
 
-  @Column("int", { nullable: true })
-  duration_days!: number;
+  @Column({ default: true })
+  is_draft!: boolean;
+
+  @Column('int', { nullable: true })
+  duration_days?: number;
+
+  @Column('decimal', { default: 0 })
+  average_rating!: number;
+
+  @Column('int', { default: 0 })
+  total_number_of_ratings!: number;
+
+  // ✅ RELATIONS
+  @OneToMany(() => Media, media => media.specialist, { cascade: true })
+  media!: Media[];
+
+  @OneToMany(() => ServiceOffering, so => so.specialist, { cascade: true })
+  service_offerings!: ServiceOffering[];
+
+  @OneToOne(() => PlatformFee, pf => pf.specialist, { cascade: true })
+  @JoinColumn()
+  platform_fee?: PlatformFee;
 
   @CreateDateColumn()
   created_at!: Date;
 
-  @UpdateDateColumn()
-  updated_at!: Date;
-
-  @DeleteDateColumn()
-  deleted_at!: Date;
-
-  // ---- RELATIONS ----
-
-  @OneToMany(() => Media, (media) => media.specialist)
-  media!: Media[];
-
-  @OneToMany(() => PlatformFee, (fee) => fee.specialist)
-  platform_fees!: PlatformFee[];
-
-  @OneToMany(() => ServiceOffering, (service) => service.specialist)
-  service_offerings!: ServiceOffering[];
+  @Column({ type: 'timestamp', nullable: true })
+  deleted_at?: Date;
 }

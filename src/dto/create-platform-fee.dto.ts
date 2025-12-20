@@ -1,16 +1,19 @@
-import { IsEnum, IsInt, IsDecimal } from 'class-validator';
+import { IsEnum, IsNumber, Min } from 'class-validator';
 import { TierName } from '../entities/platform_fee.entity';
 
 export class CreatePlatformFeeDto {
   @IsEnum(TierName)
   tier_name!: TierName;
 
-  @IsInt()
+  @IsNumber()
+  @Min(0)
   min_value!: number;
 
-  @IsInt()
+  @IsNumber()
+  @Min(0)
   max_value!: number;
 
-  @IsDecimal({ decimal_digits: '5,2' })
+  @IsNumber()
+  @Min(0)
   platform_fee_percentage!: number;
 }

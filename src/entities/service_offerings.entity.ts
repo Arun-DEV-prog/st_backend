@@ -14,6 +14,9 @@ export class ServiceOffering {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Column()
+  name!: string;
+
   @Column("uuid")
   specialists!: string;
 

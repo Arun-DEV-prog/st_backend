@@ -2,17 +2,17 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
+  OneToOne,
   JoinColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm";
 import { Specialist } from "./specialists.entity";
 
 export enum TierName {
   basic = "basic",
   standard = "standard",
-  premium = "premium"
+  premium = "premium",
 }
 
 @Entity("platform_fee")
@@ -36,13 +36,14 @@ export class PlatformFee {
   platform_fee_percentage!: number;
 
   @Column("uuid")
-  specialists!: string;
+  specialist_id!: string;
 
-  @ManyToOne(() => Specialist, (specialist) => specialist.platform_fees, {
-    onDelete: "CASCADE",
-  })
-  @JoinColumn({ name: "specialists" })
-  specialist!: Specialist;
+  @OneToOne(() => Specialist, (specialist) => specialist.platform_fee, {
+  onDelete: "CASCADE",
+})
+@JoinColumn({ name: "specialist_id" })
+specialist!: Specialist;
+
 
   @CreateDateColumn()
   created_at!: Date;

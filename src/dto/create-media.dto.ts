@@ -1,4 +1,4 @@
-import { IsString, IsEnum, IsOptional, IsInt, MinLength, MaxLength } from 'class-validator';
+import { IsString, IsNumber, IsEnum, IsOptional, MinLength, MaxLength, Min } from 'class-validator';
 import { MimeType, MediaType } from '../entities/media.entity';
 
 export class CreateMediaDto {
@@ -7,10 +7,12 @@ export class CreateMediaDto {
   @MaxLength(255)
   file_name!: string;
 
-  @IsInt()
+  @IsNumber()
+  @Min(0)
   file_size!: number;
 
-  @IsInt()
+  @IsNumber()
+  @Min(0)
   display_order!: number;
 
   @IsOptional()
