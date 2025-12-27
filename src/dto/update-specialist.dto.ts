@@ -8,8 +8,15 @@ import {
   IsArray,
   IsBoolean,
   ArrayMaxSize,
+  IsEnum,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
+
+export enum ServiceCategory {
+  incorporation = 'incorporation',
+  secretary = 'secretary',
+  bank = 'bank',
+}
 
 export class UpdateSpecialistDto {
   @IsOptional()
@@ -35,14 +42,20 @@ export class UpdateSpecialistDto {
   @Min(1)
   duration_days?: number;
 
+  // ✅ FIX: service_category added
+  @IsOptional()
+  @IsEnum(ServiceCategory)
+  service_category?: ServiceCategory;
+
   @IsOptional()
   @IsArray()
   @ArrayMaxSize(10)
   @IsString({ each: true })
   additional_offerings?: string[];
 
+  // ✅ FIX: Proper boolean transform for multipart
   @IsOptional()
-  @Type(() => Boolean)
+  @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean()
   is_draft?: boolean;
 }

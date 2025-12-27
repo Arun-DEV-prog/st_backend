@@ -34,9 +34,13 @@ export class CreateSpecialistDto {
   duration_days?: number;
 
   @IsOptional()
+  @IsString()
+  @MinLength(1)
+  @MaxLength(255)
+  service_category!: string;
   @IsArray()
   @ArrayMaxSize(10)
-  @IsString({ each: true })
+  @IsString({ each: true }) // ensures each array element is a string
   additional_offerings?: string[];
 
   @IsOptional()
